@@ -1,0 +1,20 @@
+{
+  "name": "@amitind/util",
+  "version": "0.0.1",
+  "description": "Some useful Javascript functions that I use.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amitind/util.git"
+  },
+  "keywords": ["util", "javascript", "js", "utility"],
+  "author": "Amit Yadav",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Amitind/util/issues"
+  },
+  "homepage": "https://github.com/Amitind/util#readme"
+}
