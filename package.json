@@ -1,6 +1,6 @@
 {
   "name": "@amitind/util",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Some useful Javascript functions that I use.",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,12 @@
     "type": "git",
     "url": "git+https://github.com/Amitind/util.git"
   },
-  "keywords": ["util", "javascript", "js", "utility"],
+  "keywords": [
+    "util",
+    "javascript",
+    "js",
+    "utility"
+  ],
   "author": "Amit Yadav",
   "license": "MIT",
   "bugs": {

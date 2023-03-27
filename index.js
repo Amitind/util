@@ -1,3 +1,4 @@
+"use strict";
 /**
  * When to use Arrow Functions?
  *  - https://www.youtube.com/watch?v=5iGGvJn8K1U
@@ -17,7 +18,7 @@
  * @returns {object} - object with functions
  */
 
-export function random() {
+function random() {
 	return {
 		string: randomString,
 		number: randomNumber,
@@ -158,4 +159,19 @@ function querySelectorAll(selector, parentElement = document.body) {
 
 function querySelector(selector, parentElement = document.body) {
 	return parentElement.querySelector(selector);
+}
+
+module.exports = {
+	random,
+	randomString,
+	randomNumber,
+	binary,
+	shuffleArray,
+	randomArrayItem,
+	randomItemsArray,
+	uniqueArrayitems,
+	createNewElement,
+	appendToParentElement,
+	querySelectorAll,
+	querySelector
 }
