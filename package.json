@@ -1,6 +1,6 @@
 {
   "name": "@amitind/util",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Some useful Javascript functions that I use.",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/Amitind/util/issues"
   },
-  "homepage": "https://github.com/Amitind/util#readme",
+  "homepage": "https://www.npmjs.com/package/@amitind/util",
   "files": [
     "index.js",
     "README.md",

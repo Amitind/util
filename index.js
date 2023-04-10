@@ -1,4 +1,3 @@
-"use strict";
 /**
  * When to use Arrow Functions?
  *  - https://www.youtube.com/watch?v=5iGGvJn8K1U
@@ -58,9 +57,8 @@ function randomNumber(min = 0, max = 100) {
  */
 
 function binary() {
-	return Boolean(randomNumber(0, 1))
+	return Boolean(randomNumber(0, 1));
 }
-binary() //=
 
 /** Shuffles an array
  * @param {array} array - array to be shuffled
@@ -82,7 +80,6 @@ function shuffleArray(array) {
 function randomArrayItem(array) {
 	return array[Math.floor(Math.random() * array.length)];
 }
-
 
 /** Picks random items from an array
  * @param {array} array - array from which shuffled items will be picked
@@ -146,7 +143,6 @@ function appendToParentElement(elementsArray, parentElement = document.body) {
  */
 
 function querySelectorAll(selector, parentElement = document.body) {
-
 	return [...parentElement.querySelectorAll(selector)];
 }
 
@@ -161,6 +157,18 @@ function querySelector(selector, parentElement = document.body) {
 	return parentElement.querySelector(selector);
 }
 
+/**
+ * Toggle Class in element
+ * @param {string} id - **"#id"** or **".class"** of element to toggle
+ * @param {string} className - class to be toggled, default is **hidden**
+ * @returns {void}
+ * @example toggleClass("#id"), toggleClass(".class")
+ */
+
+function toggleClass(id, className = 'hidden') {
+	querySelector(id).classList.toggle(className);
+}
+
 module.exports = {
 	random,
 	randomString,
@@ -173,5 +181,6 @@ module.exports = {
 	createNewElement,
 	appendToParentElement,
 	querySelectorAll,
-	querySelector
-}
+	querySelector,
+	toggleClass,
+};
