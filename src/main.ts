@@ -42,7 +42,7 @@ export function randomArrayItem<T>(array: T[]): T {
  */
 
 export function randomItemsArray<T>(array: T[], count: number = 5): T[] {
-	let shuffledArray = shuffleArray(array);
+	const shuffledArray = shuffleArray(array);
 	return shuffledArray.slice(0, count);
 }
 

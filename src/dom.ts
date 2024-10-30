@@ -20,7 +20,7 @@ export function createNewElement(
 	classesArray: string[] = [],
 	attributes: Record<string, string | number> = {}
 ): HTMLElement {
-	let newElement = document.createElement(elementType);
+	const newElement = document.createElement(elementType);
 	classesArray.forEach((classItem) => {
 		newElement.classList.add(classItem);
 	});
