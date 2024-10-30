@@ -53,12 +53,3 @@ export function randomItemsArray<T>(array: T[], count: number = 5): T[] {
 export function uniqueArrayitems<T extends string | number>(array: T[]): T[] {
 	return [...new Set(array)];
 }
-
-// Exporting a random object with functions
-export function random() {
-	return {
-		string: randomString,
-		number: randomNumber,
-		binary: binary,
-	};
-}
