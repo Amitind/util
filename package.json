@@ -1,6 +1,6 @@
 {
 	"name": "@amitind/util",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "Some useful Javascript functions that I use.",
 	"type": "module",
 	"files": [

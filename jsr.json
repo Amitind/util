@@ -3,7 +3,9 @@
 	"compilerOptions": {
 		"lib": ["esnext", "dom", "dom.iterable"]
 	},
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"exports": "./src/index.ts",
-	"include": ["src", "README.md", "LICENSE"]
+	"publish": {
+		"include": ["src", "README.md", "LICENSE"]
+	}
 }
