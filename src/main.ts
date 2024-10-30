@@ -42,7 +42,7 @@ export function randomArrayItem<T>(array: T[]): T {
  */
 
 export function randomItemsArray<T>(array: T[], count: number = 5): T[] {
-	let shuffledArray = shuffleArray(array);
+	const shuffledArray = shuffleArray(array);
 	return shuffledArray.slice(0, count);
 }
 
@@ -52,13 +52,4 @@ export function randomItemsArray<T>(array: T[], count: number = 5): T[] {
 
 export function uniqueArrayitems<T extends string | number>(array: T[]): T[] {
 	return [...new Set(array)];
-}
-
-// Exporting a random object with functions
-export function random() {
-	return {
-		string: randomString,
-		number: randomNumber,
-		binary: binary,
-	};
 }

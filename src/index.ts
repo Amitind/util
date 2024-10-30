@@ -9,5 +9,5 @@
  *  - https://jsdoc.app/tags-param.html
  */
 
-export * from './main';
-export * from './dom';
+export * from './main.ts';
+export * from './dom.ts';

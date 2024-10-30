@@ -1,5 +1,17 @@
 'use strict';
 
+const isBrowser =
+	typeof window !== 'undefined' && typeof document !== 'undefined';
+
+const getDefaultParent = () => {
+	if (!isBrowser) {
+		throw new Error(
+			'DOM functions can only be used in browser environment'
+		);
+	}
+	return document.body;
+};
+
 /** Creates a new element with classes
  * @example - createNewElement('div', ['class1', 'class2'], { id: 'id1', 'data-id': 'data-id1' })
  */
@@ -8,7 +20,7 @@ export function createNewElement(
 	classesArray: string[] = [],
 	attributes: Record<string, string | number> = {}
 ): HTMLElement {
-	let newElement = document.createElement(elementType);
+	const newElement = document.createElement(elementType);
 	classesArray.forEach((classItem) => {
 		newElement.classList.add(classItem);
 	});
@@ -24,7 +36,7 @@ export function createNewElement(
  */
 export function appendToParentElement(
 	elementsArray: HTMLElement[],
-	parentElement: HTMLElement = document.body
+	parentElement: HTMLElement = getDefaultParent()
 ): void {
 	elementsArray.forEach((element) => {
 		parentElement.appendChild(element);
@@ -35,7 +47,7 @@ export function appendToParentElement(
  */
 export function querySelectorAll<T extends Element = Element>(
 	selector: string,
-	parentElement: ParentNode = document.body
+	parentElement: ParentNode = getDefaultParent()
 ): T[] {
 	return Array.from(parentElement.querySelectorAll<T>(selector));
 }
@@ -46,7 +58,7 @@ export function querySelectorAll<T extends Element = Element>(
 
 export function querySelector<T extends Element = Element>(
 	selector: string,
-	parentElement: ParentNode = document.body
+	parentElement: ParentNode = getDefaultParent()
 ): T | null {
 	return parentElement.querySelector<T>(selector);
 }
