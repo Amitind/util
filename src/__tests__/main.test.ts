@@ -1,11 +1,18 @@
 import { describe, it, expect } from 'vitest';
 import {
 	randomString,
+	randomNumber,
+	binary,
 	shuffleArray,
+	randomArrayItem,
+	randomItemsArray,
+	uniqueArrayItems,
 	slugify,
 	truncate,
+	sleep,
 	chunk,
 	formatNumber,
+	debounce,
 	capitalize,
 	isEmpty,
 	deepClone,
@@ -14,6 +21,29 @@ import {
 describe('randomString', () => {
 	it('returns string of correct length', () => {
 		expect(randomString(8)).toHaveLength(8);
+	});
+	it('defaults to length 4', () => {
+		expect(randomString()).toHaveLength(4);
+	});
+});
+
+describe('randomNumber', () => {
+	it('returns number within range', () => {
+		for (let i = 0; i < 100; i++) {
+			const n = randomNumber(1, 10);
+			expect(n).toBeGreaterThanOrEqual(1);
+			expect(n).toBeLessThanOrEqual(10);
+		}
+	});
+	it('returns integer', () => {
+		expect(Number.isInteger(randomNumber())).toBe(true);
+	});
+});
+
+describe('binary', () => {
+	it('returns boolean', () => {
+		const result = binary();
+		expect(typeof result).toBe('boolean');
 	});
 });
 
@@ -31,6 +61,36 @@ describe('shuffleArray', () => {
 	});
 });
 
+describe('randomArrayItem', () => {
+	it('returns item from array', () => {
+		const arr = ['a', 'b', 'c'];
+		expect(arr).toContain(randomArrayItem(arr));
+	});
+});
+
+describe('randomItemsArray', () => {
+	it('returns requested count of items', () => {
+		const arr = [1, 2, 3, 4, 5];
+		expect(randomItemsArray(arr, 3)).toHaveLength(3);
+	});
+	it('returns items from original array', () => {
+		const arr = [1, 2, 3];
+		const items = randomItemsArray(arr, 2);
+		for (const item of items) {
+			expect(arr).toContain(item);
+		}
+	});
+});
+
+describe('uniqueArrayItems', () => {
+	it('removes duplicates', () => {
+		expect(uniqueArrayItems([1, 2, 2, 3, 3, 3])).toEqual([1, 2, 3]);
+	});
+	it('preserves unique items', () => {
+		expect(uniqueArrayItems(['a', 'b', 'a'])).toEqual(['a', 'b']);
+	});
+});
+
 describe('slugify', () => {
 	it('converts text to URL slug', () => {
 		expect(slugify('Hello World!')).toBe('hello-world');
@@ -44,6 +104,14 @@ describe('truncate', () => {
 	});
 	it('returns short strings unchanged', () => {
 		expect(truncate('Hi', 10)).toBe('Hi');
+	});
+});
+
+describe('sleep', () => {
+	it('resolves after delay', async () => {
+		const start = Date.now();
+		await sleep(50);
+		expect(Date.now() - start).toBeGreaterThanOrEqual(40);
 	});
 });
 
@@ -65,6 +133,27 @@ describe('formatNumber', () => {
 	});
 });
 
+describe('debounce', () => {
+	it('delays function execution', async () => {
+		let count = 0;
+		const fn = debounce(() => { count++; }, 50);
+		fn();
+		fn();
+		fn();
+		expect(count).toBe(0);
+		await sleep(100);
+		expect(count).toBe(1);
+	});
+	it('cancel prevents execution', async () => {
+		let count = 0;
+		const fn = debounce(() => { count++; }, 50);
+		fn();
+		fn.cancel();
+		await sleep(100);
+		expect(count).toBe(0);
+	});
+});
+
 describe('capitalize', () => {
 	it('capitalizes first letter', () => {
 		expect(capitalize('hello')).toBe('Hello');
@@ -80,6 +169,12 @@ describe('isEmpty', () => {
 		expect(isEmpty({})).toBe(true);
 		expect(isEmpty('hello')).toBe(false);
 		expect(isEmpty([1])).toBe(false);
+	});
+	it('handles Map and Set', () => {
+		expect(isEmpty(new Map())).toBe(true);
+		expect(isEmpty(new Set())).toBe(true);
+		expect(isEmpty(new Map([['a', 1]]))).toBe(false);
+		expect(isEmpty(new Set([1]))).toBe(false);
 	});
 });
 
