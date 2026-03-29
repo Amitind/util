@@ -1,0 +1,129 @@
+name: Publish Package
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      skip_publish:
+        description: 'Skip publish (test + build only)'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint (tsc)
+        run: pnpm tsc --noEmit
+
+      - name: Run tests
+        run: pnpm test
+
+  build:
+    name: Build
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build package
+        run: pnpm build
+
+      - name: Upload dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  check-version:
+    name: Check Version
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      already_published: ${{ steps.check.outputs.published }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get package version
+        id: version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Check if already published on npm
+        id: check
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          PUBLISHED=$(npm view @amitind/util version 2>/dev/null || echo "0.0.0")
+          if [ "$VERSION" = "$PUBLISHED" ]; then
+            echo "published=true" >> $GITHUB_OUTPUT
+            echo "::warning::Version $VERSION is already published on npm. Skipping publish."
+          else
+            echo "published=false" >> $GITHUB_OUTPUT
+            echo "Version $VERSION not yet published. Will publish."
+          fi
+
+  publish-npm:
+    name: Publish to npm
+    needs: check-version
+    if: needs.check-version.outputs.already_published != 'true' && github.event.inputs.skip_publish != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
+
+  publish-jsr:
+    name: Publish to JSR
+    needs: check-version
+    if: needs.check-version.outputs.already_published != 'true' && github.event.inputs.skip_publish != 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish to JSR
+        run: npx jsr publish
