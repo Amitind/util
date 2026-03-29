@@ -28,7 +28,12 @@ export function binary(): boolean {
  * @example - shuffleArray(["😏", "🤣", "🙅🏻♂️", "🎂"]) //=> [ '🙅🏻♂️', '🤣', '😏', '🎂' ]
  */
 export function shuffleArray<T>(array: T[]): T[] {
-	return [...array].sort(() => Math.random() - 0.5);
+	const result = [...array];
+	for (let i = result.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[result[i], result[j]] = [result[j], result[i]];
+	}
+	return result;
 }
 
 /** Returns a random item from an array
@@ -117,7 +122,7 @@ export function isEmpty(value: unknown): boolean {
 	return false;
 }
 
-/** Deep clone an object */
+/** Deep clone an object (JSON-based: loses functions, undefined, Dates become strings, no circular refs) */
 export function deepClone<T>(obj: T): T {
 	return JSON.parse(JSON.stringify(obj));
 }
