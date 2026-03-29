@@ -1,6 +1,6 @@
 {
 	"name": "@amitind/util",
-	"version": "1.1.2",
+	"version": "1.2.0",
 	"description": "Some useful Javascript functions that I use.",
 	"type": "module",
 	"files": [
@@ -20,7 +20,8 @@
 		"dev": "vite",
 		"dev:build": "rimraf dist && pnpm build --watch",
 		"build": "tsc && vite build",
-		"test": "echo \"No tests\"",
+		"test": "vitest run",
+		"test:watch": "vitest",
 		"prepublishOnly": "npm run build"
 	},
 	"repository": {
@@ -44,6 +45,7 @@
 		"rimraf": "^6.0.1",
 		"typescript": "^5.6.3",
 		"vite": "^5.4.8",
-		"vite-plugin-dts": "^4.2.4"
+		"vite-plugin-dts": "^4.2.4",
+		"vitest": "^1.6.1"
 	}
 }
