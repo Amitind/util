@@ -27,7 +27,7 @@ describe('shuffleArray', () => {
 	it('returns all original items', () => {
 		const original = [1, 2, 3, 4, 5];
 		const shuffled = shuffleArray(original);
-		expect(shuffled.sort()).toEqual(original.sort());
+		expect([...shuffled].sort()).toEqual([...original].sort());
 	});
 });
 

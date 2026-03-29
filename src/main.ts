@@ -101,12 +101,30 @@ export function formatNumber(num: number): string {
 }
 
 /** Debounce function */
-export function debounce<T extends (...args: any[]) => any>(fn: T, delay: number = 300): (...args: Parameters<T>) => void {
+export function debounce<T extends (...args: any[]) => any>(fn: T, delay: number = 300): ((...args: Parameters<T>) => void) & { cancel: () => void; flush: () => void } {
 	let timeoutId: ReturnType<typeof setTimeout>;
-	return (...args: Parameters<T>) => {
+	let lastArgs: Parameters<T> | undefined;
+
+	const debounced = (...args: Parameters<T>) => {
+		lastArgs = args;
 		clearTimeout(timeoutId);
 		timeoutId = setTimeout(() => fn(...args), delay);
 	};
+
+	debounced.cancel = () => {
+		clearTimeout(timeoutId);
+		lastArgs = undefined;
+	};
+
+	debounced.flush = () => {
+		if (lastArgs !== undefined) {
+			clearTimeout(timeoutId);
+			fn(...lastArgs);
+			lastArgs = undefined;
+		}
+	};
+
+	return debounced;
 }
 
 /** Capitalize first letter */
